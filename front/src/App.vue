@@ -1,13 +1,11 @@
 <script>
   // Import des composants dans l'App Vue
-  import LoginPage from "./pages/LoginPage.vue"
   import Navbar from "./components/layouts/Navbar.vue"
 
   // Export des composants importés de l'App Vue
   export default {
     name: "App",
     components: {
-      LoginPage,
       Navbar
     }
   }

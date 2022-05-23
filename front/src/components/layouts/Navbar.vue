@@ -11,14 +11,11 @@ export default  {
             <li>
                 <router-link to="/home" class="nav-link px-4 link-danger">Accueil</router-link>
             </li>
-            <li>
-                <router-link to="/profil" class="nav-link px-4 link-danger">Profil</router-link>
-            </li>
         </ul>
 
         <div class="col-md-4 text-end">
-            <button type="button" class="btn btn-outline-danger me-2">Déconnexion</button> <!-- Connexion -->
-            <button type="button" class="btn btn-danger">Connexion</button> <!-- S'enregistrer -->
+            <button type="button" class="btn btn-outline-danger me-2">Déconnexion</button> 
+            <button type="button" class="btn btn-danger">Connexion</button>
         </div>
     </header>
 </template>
