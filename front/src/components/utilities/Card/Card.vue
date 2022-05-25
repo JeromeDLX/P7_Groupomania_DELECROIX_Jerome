@@ -7,28 +7,7 @@ export default {
         Commentary,
         Avatar
     },
-    props: {
-        email: {
-            type: String,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        content: {
-            type: String,
-            required: true
-        },
-        url: {
-            type: String,
-            required: true
-        },
-        comments: {
-            type: Array,
-            required: true
-        },
-    }
+    props: ["email", "content", "url", "comments"],
 }
 </script>
 
@@ -39,9 +18,8 @@ export default {
             
             <span>{{ email }}</span>
         </div>
-            <img :src="url" class="card-img-top no-border">
+            <img v-if="url" :src="url" class="card-img-top no-border">
                 <div class="card-body">
-                    <h5 class="card-title">{{ title }}</h5>
                     <p class="card-text">{{ content }}</p>
                     
                     <hr class="dropdown-divider mb-4">
