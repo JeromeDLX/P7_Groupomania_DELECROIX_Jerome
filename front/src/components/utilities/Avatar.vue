@@ -5,13 +5,13 @@ export default {
 </script>
 
 <template>
-    <img src="https://picsum.photos/400/700" alt="Avatar" class="card-img-top rounded-circle shadow-4"/>
+    <img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/84587/preview.svg" alt="Avatar" class="card-img-top rounded-circle shadow-4"/>
 </template>
 
 <style scoped>
 img{
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 </style>

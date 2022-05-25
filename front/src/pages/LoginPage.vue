@@ -1,30 +1,52 @@
 <script>
-function checkIdentifiers(email, password) {
-        console.log({email, password})
-
-        if (email !== "jerome.delecroix@hotmail.fr") throw new Error("Invalid email")
-        if (password !== "0000") throw new Error("Invalid password")
+function connexionForm(email, password, router) {
+        const { VITE_SERVER_ADRESS, VITE_SERVER_PORT} = import.meta.env
+        const url = `http://${VITE_SERVER_ADRESS}:${VITE_SERVER_PORT}/auth/login`
         
-        const token = "My jwt token"
-        localStorage.setItem("token", token)
-        this.$router.push('/home')
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email, password})
+        }
+        fetch(url, options)
+            .then((res) => {
+                if (res.ok) return res.json()
+                res.text().then((err) => {
+                    const {error} = JSON.parse(err)
+                    this.error = error
+                    throw new Error(error)
+                })
+                throw new Error(JSON.stringify(res))
+            })
+            .then((res) => {
+                const token = res.token
+                localStorage.setItem("token", token)
+                this.$router.push("/home")
+            })
+            .catch((err) => {
+                console.error(err)
+            })
 };
 
 export default {
     name : "LoginPage",
         data,
         methods: {
-            checkIdentifiers,
+            connexionForm,
             isValidForm
         },
         watch: {
             usermail(value) {
                 const isValueEmpty = value === ""
                 this.isValidForm(!isValueEmpty)
+                this.error = null
             },
             password(value) {
                 const isValueEmpty = value === ""
                 this.isValidForm(!isValueEmpty)
+                this.error = null
             }
         }
 };
@@ -35,7 +57,12 @@ function isValidForm (boolean) {
 };
 
 function data () {
-    return { usermail: "jerome.delecroix@hotmail.fr", password: "0000", hasInvalidIdentifiers: false }
+    return { 
+        usermail: "user1@hotmail.fr", 
+        password: "000", 
+        hasInvalidIdentifiers: false, 
+        error: null
+    }
 };
 </script>
 
@@ -64,14 +91,18 @@ function data () {
             <label for="floatingPassword">Mot de passe</label>
         </div>
 
-        <span class="mb-3 d-block field-error" v-if="hasInvalidIdentifiers">Veillez à bien remplir tout les champs</span>
-
+        <div class="mb-3 d-block field-error" v-if="hasInvalidIdentifiers">Veillez à bien remplir tout les champs</div>
+        <div class="mb-3 d-block field-error" v-if="!hasInvalidIdentifiers && error">{{ error }}</div> <!-- Mot de passe incorrect-->
+        
         <button 
             class="w-100 btn btn-lg btn-danger" 
             type="submit" 
-            @click.prevent="() => checkIdentifiers(this.usermail, this.password)"
+            @click.prevent="() => connexionForm(this.usermail, this.password, this.$router)"
             :disabled="hasInvalidIdentifiers">Se connecter
         </button>
+
+        <p>Value: {{usermail}}</p>
+        <p>Value: {{password}}</p>
 
     </form>
 </main>
