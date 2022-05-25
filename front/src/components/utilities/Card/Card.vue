@@ -6,6 +6,28 @@ export default {
     components: {
         Commentary,
         Avatar
+    },
+    props: {
+        email: {
+            type: String,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        },
+        comments: {
+            type: Array,
+            required: true
+        },
     }
 }
 </script>
@@ -13,18 +35,20 @@ export default {
 <template>
     <div class="card mb-3 m-auto">
         <div class="card-header bg-light">
-            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" alt="Avatar" class="rounded-circle shadow-4"/>
-            Jérôme
+            <img src="https://d29fhpw069ctt2.cloudfront.net/icon/image/84587/preview.svg" alt="Avatar" class="rounded-circle shadow-4"/>
+            
+            <span>{{ email }}</span>
         </div>
-            <img src="https://picsum.photos/400/700" class="card-img-top no-border">
+            <img :src="url" class="card-img-top no-border">
                 <div class="card-body">
-                    <h5 class="card-title">Petite photo</h5>
-                    <p class="card-text">Le petit commentaire qui fait plaisir.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h5 class="card-title">{{ title }}</h5>
+                    <p class="card-text">{{ content }}</p>
                     
                     <hr class="dropdown-divider mb-4">
                     
-                    <Commentary></Commentary>
+                    <div v-for="comment in comments">
+                        <Commentary :email="comment.user" :content="comment.content"></Commentary>
+                    </div>
                     
                     <div class="d-flex gap-1">
                         <Avatar></Avatar>
@@ -43,13 +67,18 @@ export default {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
 }
 .card-header img {
-    width: 80px;
+    width: 60px;
+    margin-right: 5px;
+}
+
+.card-header {
+    padding: 8px;
 }
 
 img {
     object-position: center;
     object-fit: cover;
-    max-height: 650px;
+    max-height: 600px;
 }
 
 @media (min-width: 768px) {

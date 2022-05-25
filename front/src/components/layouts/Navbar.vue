@@ -1,6 +1,23 @@
 <script>
 export default  {
-    name: "Navbar"
+    name: "Navbar",
+    data() {
+        return {
+            isUserLogin: false
+        }
+    },
+    created() {
+        const token = localStorage.getItem("token")
+        if (token == null) {
+            this.isUserLogin = true
+        }
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem("token")
+            this.$router.push("/login")
+        }
+    }
 } 
 </script>
 
@@ -14,8 +31,18 @@ export default  {
         </ul>
 
         <div class="col-md-4 text-end">
-            <button type="button" class="btn btn-outline-danger me-2">Déconnexion</button> 
-            <button type="button" class="btn btn-danger">Connexion</button>
+            <button 
+            @click=""
+            v-if="this.isUserLogin" 
+            type="button" 
+            class="btn btn-danger">Connexion
+            </button>
+            <button 
+            @click="logout"
+            v-if="!this.isUserLogin" 
+            type="button" 
+            class="btn btn-outline-danger me-2">Déconnexion
+            </button> 
         </div>
     </header>
 </template>

@@ -4,6 +4,16 @@ export default {
     name: "Commentary",
     components: {
         Avatar
+    },
+    props: {
+        email: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
     }
 }
 </script>
@@ -12,15 +22,15 @@ export default {
     <div class="d-flex">
         <Avatar></Avatar>
             <div class="d-flex flex-column commentary p-2 bg-light">
-                <p>Jéjé</p>
-                <p>Pas mal du tout ce post !</p>
+                <p>{{ email }}</p>
+                <p>{{ content }}</p>
             </div>
     </div>
 </template>
 
 <style scoped>
 .commentary {
-    box-shadow: var(--bs-gray-300) 1.95px 1.95px 2.6px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
     border-radius: 20px;
     width: 100%;
     margin: 0px 0px 15px 15px;
