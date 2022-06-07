@@ -1,3 +1,5 @@
+const { prisma } = require('../database/database');
+
 const comment1 = {
     id: "comment1",
     user:"user2@gmail.com",
@@ -50,8 +52,12 @@ function createPost(req, res) {
     const url = hasImage ? createImageUrl(req) : null
     const email = req.email
     const post = { content, user: email, url, comments: [], id: String(posts.length + 1) }
-    posts.unshift(post)
-    res.send({ post })
+    
+    
+    prisma.post.create({ data: post })
+    .then((post) => console.log (post))
+    //posts.unshift(post)
+    //res.send({ post })
 };
 
 // Sert à créer l'url de l'image uploader

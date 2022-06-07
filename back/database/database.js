@@ -6,4 +6,8 @@ const user2 = {email: "user2@hotmail.fr", password: mockHash}
 const user3 = {email: "user3@hotmail.fr", password: mockHash}
 const users = [user1, user2, user3]
 
-module.exports = {users};
+// Mise en place de Prisma
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+module.exports = { users, prisma };
