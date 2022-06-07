@@ -5,17 +5,19 @@ const routerPosts = express.Router();
 // Récupération de la fonction de vérification du token utilisateur
 const { checkToken } = require("../middleware/token");
 
-// Récupération de la fonction de recup des posts
-const { getPosts } = require("../controllers/posts");
+// Récupération de la fonction d'upload d'images
+const { imageToUpload } = require("../middleware/multer")
 
-// Récupération de la fonction de création d'un post
-const { createPost } = require("../controllers/posts");
+// Récupération des fonctions de recup et, création des posts
+const { getPosts, createPost, createCommentary, deletePost } = require("../controllers/posts");
 
 /* - - - - - ROUTES - - - - - */ 
 // .use -> Sert à dire qu'il faut checker le token avant chaque routes
 routerPosts.use(checkToken);
 routerPosts.get("/", getPosts);
-routerPosts.post("/", createPost);
+routerPosts.post("/", imageToUpload, createPost);
+routerPosts.post("/:id", createCommentary);
+routerPosts.delete("/:id", deletePost);
 
 
 module.exports = { routerPosts }; 

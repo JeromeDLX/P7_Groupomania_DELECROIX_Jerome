@@ -49,13 +49,15 @@ export default {
 <template>
     <div v-if="email" class="container-sm">
         <Post></Post>
+        <div v-if="posts.length === 0">Oups... il n'y à pas de post pour le moment</div>
         <div v-for="post in posts">
             <Card 
             :email="post.user" 
             :title="post.title" 
             :content="post.content" 
             :url="post.url"
-            :comments="post.comments">
+            :comments="post.comments"
+            :id="post.id">
             </Card>
         </div>
     </div>
