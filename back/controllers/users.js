@@ -4,33 +4,35 @@ const bcrypt = require("bcrypt");
 // Mise en place de json web token
 const jwt = require("jsonwebtoken");
 
-// Récupération des utilisateurs de la base de données
-const {users} = require("../database/database");
+// Récupération de Prisma
+const { prisma } = require("../database/database");
 
 // Gestion de la connexion d'un utilisateur
-function loginUser(req, res) {
+async function loginUser(req, res) {
     // Récupération email et password
     const {email, password} = req.body
-    
+
+    try {
     // Ensuite vérification si l'utilisateur existe déjà ou non
-    const user = getUser(email)
+    const user = await getUser(email)
     if (user == null) return res.status(404).send({error: "Utilisateur non trouvé"})
     
     // Puis check du password si correct ou non en regard du hash
-    passwordCheck(user, password)
-    .then((isPasswordValid) => {
+    const isPasswordCorrect = await passwordCheck(user, password)
+    
         // En cas de mot de passe incorrect envoit de l'erreur ci-dessous
-        if (!isPasswordValid) return res.status(401).send({error: "Mot de passe incorrect"})
+        if (!isPasswordCorrect) return res.status(401).send({error: "Mot de passe incorrect"})
         // Sinon envoit du token avec email de l'utilisateur
         const token = createToken(email)
         res.send({token: token, email: user.email})
-    })
-    .catch((error) => res.status(500).send({error}))
+    } catch(error) {
+    res.status(500).send({error})
+    }
 };
 
-// Récupération de l'email utilisateur
+// Récupération de l'email utilisateur et comparaison si déjà existant
 function getUser (email) {
-    return users.find((user) => user.email === email)
+    return prisma.user.findUnique({ where: { email }})
 };
 
 // Récupération du mot de passe de l'utilisateur pour comparaison du hash avec bcrypt
@@ -44,26 +46,27 @@ function createToken (email) {
 };
 
 // Gestion de l'enregistrement d'un nouvel utilisateur
-function signupUser (req, res) {
+async function signupUser (req, res) {
     const {email, password, confirmationPassword} = req.body
+    try {
     // Vérification de la concordance des mots de passe
     if (password !== confirmationPassword) return res.status(400).send({error: "Les mots de passe ne correspondent pas"})
     
     // Vérification si l'utilisateur existe déjà ou non
-    const user = getUser(email)
-    if (user !=null) return res.status(400).send({error: "Utilisateur déjà enregistré"})
+    const userInDatabase = await getUser(email)
+    if (userInDatabase !=null) return res.status(400).send({error: "Utilisateur déjà enregistré"})
     
-    hashPassword(password)
-    .then((hashed) => {
-        saveUserToDatabase({email, password: hashed})
-        res.send({email: email})
-    })
-    .catch((error) => res.status(500).send({error}))
+    const hash = await hashPassword(password)
+    const user = await saveUserToDatabase({email, password: hash})
+    res.send({ user })
+    } catch(error) {
+    res.status(500).send({error})
+    }
 };
 
 // Fonction qui sert à sauvergarder l'utilisateur dans la base de données
 function saveUserToDatabase (user) {
-    users.push(user)
+    return prisma.user.create({ data: user })
 };
 
 // Fonction qui sert à hasher les mots de passe 
