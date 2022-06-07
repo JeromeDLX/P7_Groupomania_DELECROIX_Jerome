@@ -1,5 +1,3 @@
-const res = require("express/lib/response");
-
 const comment1 = {
     id: "comment1",
     user:"user2@gmail.com",

@@ -53,7 +53,9 @@ export default {
         </div>
     </div>
     
-    <hr class="dropdown-divider mb-3 mt-3">
+    <div class="divider d-flex">
+        <hr class="dropdown-divider mb-3 mt-3">
+    </div>
 
 </template>
 
@@ -66,5 +68,27 @@ input {
     margin-left: 8px;
     padding: 4px;
     border-radius: 10px;
+}
+
+.container-sm {
+    width: 72%;
+    justify-content: center;
+}
+
+.divider {
+    justify-content: center;
+}
+
+.dropdown-divider {
+    width: 70%;
+}
+
+@media (max-width: 762px) {
+    .container-sm {
+        width: 100%;
+    }
+    .dropdown-divider {
+        width: 100%;
+    }
 }
 </style>

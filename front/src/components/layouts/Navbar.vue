@@ -1,6 +1,8 @@
 <script>
+import Logo from "./../../components/utilities/Logo.vue"
 export default  {
     name: "Navbar",
+    components: {Logo},
     data() {
         return {
             isUserLogin: false
@@ -22,7 +24,9 @@ export default  {
 </script>
 
 <template>
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 px-3 mb-3 border-bottom bg-light">
+    <header class="d-flex flex-wrap align-items-center justify-content-center py-3 px-3 mb-3 border-bottom bg-light">
+
+        <Logo class="bi" width="40" height="32" role="img" aria-label="Bootstrap"></Logo>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li>
