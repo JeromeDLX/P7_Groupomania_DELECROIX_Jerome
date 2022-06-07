@@ -58,7 +58,7 @@ function isValidForm (boolean) {
 
 function data () {
     return { 
-        usermail: "user1@hotmail.fr", 
+        usermail: "user@gmail.com", 
         password: "000", 
         hasInvalidIdentifiers: false, 
         error: null

@@ -22,8 +22,11 @@ const { loginUser, signupUser } = require("./controllers/users");
 // Récupération du router posts
 const { routerPosts } = require("./routes/posts")
 
-/* - - - - - ROUTES - - - - - */ 
+// Des qu'on arrive sur route /post redirection vers le routerPosts
 app.use("/posts", routerPosts);
+app.use("/images", express.static("images"));
+
+/* - - - - - ROUTES - - - - - */ 
 app.post("/auth/login", loginUser);
 app.post("/auth/signup", signupUser);
 

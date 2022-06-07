@@ -1,4 +1,5 @@
 <script>
+import { url, headers } from './../../services/fetch'
 export default {
     name: "Post",
     data() {
@@ -8,22 +9,15 @@ export default {
         }
     },
     methods: {
-        uploadNewFile(ev) {
-            this.imageSelect = ev.target.files[0]
+        uploadNewFile(e) {
+            this.imageSelect = e.target.files[0]
         },
         submitPost() {
-            const { VITE_SERVER_ADRESS, VITE_SERVER_PORT} = import.meta.env
-            const url = `http://${VITE_SERVER_ADRESS}:${VITE_SERVER_PORT}/posts`
-
             const formData = new FormData()
             formData.append("content", this.content)
             formData.append("image", this.imageSelect)
             const options = {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    "Content-Type": "multipart/form-data",
-                    "Accept": "application/json"
-                },
+                headers,
                 method: "POST",
                 body: formData
             }
@@ -36,7 +30,6 @@ export default {
                 }
             })
             .then((res) => {
-                console.log("res", res)
                 this.$router.go()
             })
             .catch((err) => console.log("err:", err))
@@ -54,12 +47,10 @@ export default {
 
         <div class="d-flex">
             <label for="input-file" class="btn btn-danger mt-2">Image</label>
+            <span v-if="imageSelect" class="viewuser-file bg-light mt-2" > {{ imageSelect.name }}</span>
             <input id="input-file" type="file" @change="uploadNewFile"/>
             <button @click="submitPost" type="button" class="btn mt-2 ms-auto btn-outline-danger">Publier</button>
         </div>
-
-        {{ content }}
-
     </div>
     
     <hr class="dropdown-divider mb-3 mt-3">
@@ -69,5 +60,11 @@ export default {
 <style scoped>
 input {
     display: none;
+}
+
+.viewuser-file {
+    margin-left: 8px;
+    padding: 4px;
+    border-radius: 10px;
 }
 </style>
