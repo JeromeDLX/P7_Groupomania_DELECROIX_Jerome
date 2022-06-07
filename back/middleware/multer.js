@@ -1,5 +1,4 @@
 // Mise en place de multer
-
 const multer = require('multer');
 
 // Mise en place du dossier images ou seront stockées les images

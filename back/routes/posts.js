@@ -8,7 +8,7 @@ const { checkToken } = require("../middleware/token");
 // Récupération de la fonction d'upload d'images
 const { imageToUpload } = require("../middleware/multer")
 
-// Récupération des fonctions de recup et, création des posts
+// Récupération des fonctions de fonctionnement
 const { getPosts, createPost, createCommentary, deletePost } = require("../controllers/posts");
 
 /* - - - - - ROUTES - - - - - */ 
