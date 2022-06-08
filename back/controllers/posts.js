@@ -43,7 +43,18 @@ async function getPosts(req, res) {
     const email = req.email
     const posts = await prisma.post.findMany({
         include: {
-            comments: true,
+            comments: {
+                orderBy: {
+                    createdAt: "asc"
+                },
+                include: {
+                    user: {
+                        select: {
+                            email: true
+                        }
+                    }
+                }
+            },
             user: {
                 select: {
                     email: true
@@ -69,7 +80,6 @@ async function createPost(req, res) {
     addImageUrlInPost(req, post)
     
     const postResult = await prisma.post.create({ data: post })
-    console.log("RESULT:", postResult)
     res.send({ post: postResult })
     } catch(err) {
         res.status(500).send({ error: "La création du post a échoué"})
@@ -86,20 +96,29 @@ function addImageUrlInPost(req, post) {
     const url = `${protocol}://${host}/${pathToImage}`
     post.url = url
 };
-// const url = hasImage ? createImageUrl(req) : undefined
+
 // Sert à créer un commentaire sur un post
-function createCommentary(req, res){
-    const postId = req.params.id
-    const post = posts.find((post) => post.id === postId)
-    
+async function createCommentary(req, res){
+    const postId = Number(req.params.id)
+    const post = await prisma.post.findUnique({
+        where: { id: postId },
+        include: {
+            user: {
+                select: {
+                    id: true
+                }
+            }
+        }
+    })
+    console.log("POST:", post)
     if (post == null) {
         return res.status(404).send({ error: "Post non trouvé"})
     }
-    const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-    const user = req.email
-    const commentToSend = { id, user, content: req.body.comment}
-    post.comments.push(commentToSend)
-    res.send({post})
+    const userId = post.user.id
+
+    const commentToSend = { userId, postId, content: req.body.comment }
+    const comment = await prisma.comment.create({ data: commentToSend})
+    res.send({ comment })
 };
 
 // Sert à supprimer un post
