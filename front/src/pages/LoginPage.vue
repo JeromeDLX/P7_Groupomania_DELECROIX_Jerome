@@ -57,9 +57,7 @@ function isValidForm (boolean) {
 };
 
 function data () {
-    return { 
-        usermail: "user@gmail.com", 
-        password: "000", 
+    return {
         hasInvalidIdentifiers: false, 
         error: null
     }
@@ -100,10 +98,6 @@ function data () {
             @click.prevent="() => connexionForm(this.usermail, this.password, this.$router)"
             :disabled="hasInvalidIdentifiers">Se connecter
         </button>
-
-        <p>Value: {{usermail}}</p>
-        <p>Value: {{password}}</p>
-
     </form>
 </main>
 </template>

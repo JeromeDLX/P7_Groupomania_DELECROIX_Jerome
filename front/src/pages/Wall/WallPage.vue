@@ -31,27 +31,31 @@ export default {
                 }
             })
             .then((res) => {
-                const {posts, email} = res
+                const { posts, email } = res
                 this.posts = posts
-                this.email = email
+                this.currentUser = email
             })
             .catch((err) => console.log("err:", err))
     },
     data() {
         return {
             posts: [],
-            email: null
+            currentUser: null
         }
     },
 }
 </script>
 
 <template>
-    <div v-if="email" class="container-sm">
+    <div v-if="currentUser" class="container-sm">
+        <div class="col-sm-12 mb-3">
+            <h1 class="text-center mb-0"> Bonjour, {{ currentUser }}</h1>
+        </div>
         <Post></Post>
         <div v-if="posts.length === 0">Oups... il n'y à pas de post pour le moment</div>
         <div v-for="post in posts">
             <Card 
+            :currentUser="currentUser"
             :email="post.user.email" 
             :content="post.content" 
             :url="post.url"
@@ -63,4 +67,8 @@ export default {
 </template>
 
 <style scoped>
+h1 {
+    font-size: large;
+    font-weight: lighter;
+}
 </style>
