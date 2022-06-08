@@ -41,7 +41,6 @@ export default {
             .catch((err) => console.log("err:", err))
         },
         deletePost() {
-            //console.log("adresse du post a delete", url + "/" + this.$props.id)
             console.log("id du post a delete", this.$props.id)
             fetch(url + "/" + this.$props.id, {
                 headers: { ...headers, "Content-Type": "application/json"},
@@ -85,7 +84,7 @@ export default {
                     <hr class="dropdown-divider mb-4">
                     
                     <div v-for="comment in comments">
-                        <Commentary :email="comment.user" :content="comment.content"></Commentary>
+                        <Commentary :email="comment.user.email" :content="comment.content"></Commentary>
                     </div>
                     
                     <div class="d-flex gap-1">
