@@ -39,35 +39,54 @@ const post3 = {
 const posts = [post1, post2, post3];
 
 // Sert à récupérer les posts présent sur le site
-function getPosts(req, res) {
+async function getPosts(req, res) {
     const email = req.email
+    const posts = await prisma.post.findMany({
+        include: {
+            comments: true,
+            user: {
+                select: {
+                    email: true
+                }
+            }
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
     res.send({ posts, email })
 };
 
 // Sert à créer un post sur le site
-function createPost(req, res) {
+async function createPost(req, res) {
     const content = req.body.content
-    const hasImage = req.file !=null
-
-    const url = hasImage ? createImageUrl(req) : null
     const email = req.email
-    const post = { content, user: email, url, comments: [], id: String(posts.length + 1) }
     
+    try {
+    const user = await prisma.user.findUnique({ where: { email }})
+    const userId = user.id
+    const post = { content, userId }
+    addImageUrlInPost(req, post)
     
-    prisma.post.create({ data: post })
-    .then((post) => console.log (post))
-    //posts.unshift(post)
-    //res.send({ post })
+    const postResult = await prisma.post.create({ data: post })
+    console.log("RESULT:", postResult)
+    res.send({ post: postResult })
+    } catch(err) {
+        res.status(500).send({ error: "La création du post a échoué"})
+    }
 };
 
 // Sert à créer l'url de l'image uploader
-function createImageUrl(req) {
+function addImageUrlInPost(req, post) {
+    const hasImage = req.file !=null
+    if (!hasImage) return
     let pathToImage = req.file.path.replace("\\", "/")
     const protocol = req.protocol
     const host = req.get("host")
-    return `${protocol}://${host}/${pathToImage}`
+    const url = `${protocol}://${host}/${pathToImage}`
+    post.url = url
 };
-
+// const url = hasImage ? createImageUrl(req) : undefined
 // Sert à créer un commentaire sur un post
 function createCommentary(req, res){
     const postId = req.params.id

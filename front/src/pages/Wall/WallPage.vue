@@ -52,8 +52,7 @@ export default {
         <div v-if="posts.length === 0">Oups... il n'y à pas de post pour le moment</div>
         <div v-for="post in posts">
             <Card 
-            :email="post.user" 
-            :title="post.title" 
+            :email="post.user.email" 
             :content="post.content" 
             :url="post.url"
             :comments="post.comments"
