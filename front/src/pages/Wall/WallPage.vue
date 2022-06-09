@@ -1,4 +1,5 @@
 <script>
+import { url } from '../../services/fetch'
 import Card from "../../components/utilities/Card/Card.vue"
 import Post from "./Post.vue"
 export default {
@@ -15,14 +16,12 @@ export default {
         }
     },
     mounted() {
-        const { VITE_SERVER_ADRESS, VITE_SERVER_PORT} = import.meta.env
-        const url = `http://${VITE_SERVER_ADRESS}:${VITE_SERVER_PORT}/posts`
         const options = {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         }
-        fetch(url, options)
+        fetch(url + "posts/", options)
             .then((res) => {
                 if (res.status === 200) {
                     return res.json()

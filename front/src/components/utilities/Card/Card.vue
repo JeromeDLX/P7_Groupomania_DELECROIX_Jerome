@@ -17,8 +17,6 @@ export default {
     mounted() {},
     methods: {
         addComment(e){
-            console.log(this.currentComment)
-            console.log(this.$props.id)
             const options = {
                 headers: {...headers, "Content-Type": "application/json"},
                 method: "POST",
@@ -26,7 +24,7 @@ export default {
                     comment: this.currentComment
                 })
             }
-            fetch(url + "/" + this.$props.id, options)
+            fetch(url + "posts/" + this.$props.id, options)
             .then((res) => {
                 if (res.status === 200) {
                     return res.json()
@@ -35,14 +33,12 @@ export default {
                 }
             })
             .then((res) => {
-                console.log(res)
                 this.$router.go()
             })
             .catch((err) => console.log("err:", err))
         },
         deletePost() {
-            console.log("id du post a delete", this.$props.id)
-            fetch(url + "/" + this.$props.id, {
+            fetch(url + "posts/" + this.$props.id, {
                 headers: { ...headers, "Content-Type": "application/json"},
                 method: "DELETE"
             })
@@ -54,7 +50,6 @@ export default {
                 }
             })
             .then((res) => {
-                console.log(res)
                 this.$router.go()
             })
             .catch((err) => console.log("err:", err))

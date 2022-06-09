@@ -1,8 +1,7 @@
 <script>
-function connexionForm(email, password, router) {
-        const { VITE_SERVER_ADRESS, VITE_SERVER_PORT} = import.meta.env
-        const url = `http://${VITE_SERVER_ADRESS}:${VITE_SERVER_PORT}/auth/login`
-        
+import { url, headers } from './../services/fetch'
+import axios from 'axios'
+function loginUser(email, password, router) {
         const options = {
             method: 'POST',
             headers: {
@@ -10,7 +9,7 @@ function connexionForm(email, password, router) {
             },
             body: JSON.stringify({email, password})
         }
-        fetch(url, options)
+        fetch(url + "auth/login", options)
             .then((res) => {
                 if (res.ok) return res.json()
                 res.text().then((err) => {
@@ -32,43 +31,68 @@ function connexionForm(email, password, router) {
 
 export default {
     name : "LoginPage",
-        data,
+        data() {
+        return {
+            usermail: "",
+            password: "",
+            confirmPassword: "",
+            hasInvalidIdentifiers: false, 
+            error: null,
+            isLoginMode: true
+        }},
         methods: {
-            connexionForm,
-            isValidForm
+            loginUser,
+            setValidityOfForm,
+            switchLoginMode() {
+                this.isLoginMode = !this.isLoginMode
+            },
+            signupNewUser: async function(email, password, confirmPassword, router) {
+                const body = JSON.stringify({
+                    email,
+                    password, 
+                    confirmationPassword: this.confirmPassword
+                })
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+                try {
+                await axios.post(url + "auth/signup", body, options)
+                this.$router.go("/")
+                } catch (err) {
+                    const error = err.response.data.error
+                    this.error = error
+                    throw new Error("Echec d'enregistrement" + error)
+                }
+            }
         },
         watch: {
             usermail(value) {
                 const isValueEmpty = value === ""
-                this.isValidForm(!isValueEmpty)
+                this.setValidityOfForm(!isValueEmpty)
                 this.error = null
             },
             password(value) {
                 const isValueEmpty = value === ""
-                this.isValidForm(!isValueEmpty)
+                this.setValidityOfForm(!isValueEmpty)
                 this.error = null
             }
         }
 };
 
-function isValidForm (boolean) {
-    console.log("Is valid form", boolean)
+function setValidityOfForm (boolean) {
     this.hasInvalidIdentifiers = !boolean
-};
-
-function data () {
-    return {
-        hasInvalidIdentifiers: false, 
-        error: null
-    }
 };
 </script>
 
 <template>
 <main class="form-signin">
     <form :class="this.hasInvalidIdentifiers ? 'hasErrors': ''">
-        <img class="mb-4 d-block mx-auto" src="../../icon.svg" alt="" width="72" height="57">
-        <h1 class="h3 mb-3 fw-normal">Veuillez vous connecter</h1>
+        <img class="d-block mx-auto" src="../../icon-above-font.svg" alt="icone groupomania" height="250">
+        <h1 class="h3 mb-3 fw-normal">{{this.isLoginMode? "Veuillez vous connecter" : "Veuillez vous enregistrer"}}</h1>
 
         <div class="form-floating">
             <input type="email" class="form-control" 
@@ -76,28 +100,46 @@ function data () {
                 placeholder="name@example.com" 
                 v-model="usermail" 
                 required="true" 
-                @invalid="isValidForm">
+                @invalid="setValidityOfForm">
             <label for="floatingInput">Adresse mail</label>
         </div>
+
         <div class="form-floating">
-            <input type="password" class="form-control" 
+            <input type="password" class="form-control mb-0" 
                 id="floatingPassword" 
                 placeholder="Password" 
                 v-model="password" 
                 required="true" 
-                @invalid="isValidForm">
+                @invalid="setValidityOfForm">
             <label for="floatingPassword">Mot de passe</label>
         </div>
+        <div v-if="!isLoginMode" class="form-floating">
+            <input type="password" class="form-control mb-0" 
+                placeholder="Confirm password" 
+                v-model="confirmPassword" 
+                required="true" 
+                @invalid="setValidityOfForm">
+            <label for="floatingPassword">Confirmation mot de passe</label>
+        </div>
 
-        <div class="mb-3 d-block field-error" v-if="hasInvalidIdentifiers">Veillez à bien remplir tout les champs</div>
-        <div class="mb-3 d-block field-error" v-if="!hasInvalidIdentifiers && error">{{ error }}</div> <!-- Mot de passe incorrect-->
+        <div class="mt-2 d-block field-error" v-if="hasInvalidIdentifiers">Veillez à bien remplir tout les champs</div>
+        <div class="mt-2 d-block field-error" v-if="!hasInvalidIdentifiers && error">{{ error }}</div> <!-- Mot de passe incorrect-->
         
-        <button 
-            class="w-100 btn btn-lg btn-danger" 
+        <button v-if="isLoginMode"
+            class="w-100 btn btn-lg btn-danger mt-2 mb-2" 
             type="submit" 
-            @click.prevent="() => connexionForm(this.usermail, this.password, this.$router)"
+            @click.prevent="() => loginUser(this.usermail, this.password, this.$router)"
             :disabled="hasInvalidIdentifiers">Se connecter
         </button>
+        <button v-if="!isLoginMode"
+            class="w-100 btn btn-lg btn-danger mt-2 mb-2" 
+            type="submit" 
+            @click.prevent="() => signupNewUser (this.usermail, this.password, this.confirmPassword, this.$router)"
+            :disabled="hasInvalidIdentifiers">S'enregistrer
+        </button>
+
+        <p class="mt-1 mb-3" @click.prevent="switchLoginMode"><a href="" class="create-account">{{ this.isLoginMode? "Créer un compte" : "Se connecter"}}</a></p>
+
     </form>
 </main>
 </template>
@@ -157,6 +199,13 @@ border-top-right-radius: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+}
+
+.create-account {
+    text-decoration: none;
+    color: var(--bs-red);
+    border-bottom: 1px solid var(--bs-red);
+    padding-bottom: 2px;
 }
 
 @media (min-width: 768px) {
