@@ -101,7 +101,6 @@ async function deletePost(req, res) {
             }
         }
     })
-    console.log("POST:", post)
     if(post == null) {
         return res.status(404).send({error: "Post non trouvé"})
     }

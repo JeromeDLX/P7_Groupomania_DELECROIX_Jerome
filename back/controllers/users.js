@@ -49,9 +49,10 @@ function createToken (email) {
 async function signupUser (req, res) {
     const {email, password, confirmationPassword} = req.body
     try {
+    // Vérification si le mot de passe de confirmation à bien été renseigné
+    if (confirmationPassword == null) return res.status(400).send({error: "Veillez à confirmer votre mot de passe"})
     // Vérification de la concordance des mots de passe
     if (password !== confirmationPassword) return res.status(400).send({error: "Les mots de passe ne correspondent pas"})
-    
     // Vérification si l'utilisateur existe déjà ou non
     const userInDatabase = await getUser(email)
     if (userInDatabase !=null) return res.status(400).send({error: "Utilisateur déjà enregistré"})

@@ -21,7 +21,7 @@ export default {
                 method: "POST",
                 body: formData
             }
-            fetch(url, options)
+            fetch(url + "posts/", options)
             .then((res) => {
                 if (res.status === 200) {
                     return res.json()
