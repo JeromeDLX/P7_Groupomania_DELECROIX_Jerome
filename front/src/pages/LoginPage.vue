@@ -20,6 +20,7 @@ function loginUser(email, password, router) {
                 throw new Error(JSON.stringify(res))
             })
             .then((res) => {
+                createItemForReload()
                 const token = res.token
                 localStorage.setItem("token", token)
                 this.$router.push("/home")
@@ -86,6 +87,10 @@ export default {
 function setValidityOfForm (boolean) {
     this.hasInvalidIdentifiers = !boolean
 };
+
+function createItemForReload() {
+    localStorage.setItem("reload", Date.now());
+}
 </script>
 
 <template>
