@@ -42,6 +42,12 @@ export default {
             currentUser: null
         }
     },
+    beforeUpdate() {
+    if (localStorage.getItem('reload')) {
+        this.$router.go()
+        localStorage.removeItem('reload');
+    }
+    }
 }
 </script>
 

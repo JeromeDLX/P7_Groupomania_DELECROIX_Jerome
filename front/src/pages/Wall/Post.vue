@@ -14,8 +14,13 @@ export default {
         },
         submitPost() {
             const formData = new FormData()
+            
             formData.append("content", this.content)
+            console.log("CONTENT:", this.content)
+            
             formData.append("image", this.imageSelect)
+            console.log("IMAGE:", this.imageSelect)
+
             const options = {
                 headers,
                 method: "POST",
