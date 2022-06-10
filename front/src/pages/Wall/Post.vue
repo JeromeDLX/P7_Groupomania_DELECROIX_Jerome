@@ -14,12 +14,14 @@ export default {
         },
         submitPost() {
             const formData = new FormData()
-            
             formData.append("content", this.content)
-            console.log("CONTENT:", this.content)
-            
             formData.append("image", this.imageSelect)
-            console.log("IMAGE:", this.imageSelect)
+
+            if (this.content || this.imageSelect) {
+                console.log("Post valide")
+            } else {
+                return alert("Oups... le post à l'air vide :)")
+            }
 
             const options = {
                 headers,
