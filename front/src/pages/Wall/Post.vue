@@ -25,7 +25,8 @@ export default {
                 return Swal.fire({
                     title: "Oups, le post à l'air vide :)",
                     icon: 'error',
-                    confirmButtonText: 'Retour'
+                    confirmButtonText: 'Retour',
+                    confirmButtonColor: "#DC3545"
                 })
             }
 
