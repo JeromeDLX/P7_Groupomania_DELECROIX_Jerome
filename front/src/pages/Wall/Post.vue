@@ -1,5 +1,7 @@
 <script>
 import { url, headers } from './../../services/fetch'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
 export default {
     name: "Post",
     data() {
@@ -20,7 +22,11 @@ export default {
             if (this.content || this.imageSelect) {
                 console.log("Post valide")
             } else {
-                return alert("Oups... le post à l'air vide :)")
+                return Swal.fire({
+                    title: "Oups, le post à l'air vide :)",
+                    icon: 'error',
+                    confirmButtonText: 'Retour'
+                })
             }
 
             const options = {
