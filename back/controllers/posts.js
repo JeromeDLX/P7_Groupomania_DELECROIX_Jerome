@@ -104,10 +104,6 @@ async function deletePost(req, res) {
     if(post == null) {
         return res.status(404).send({error: "Post non trouvé"})
     }
-    const email = req.email
-    if(email !== post.user.email) {
-        return res.status(404).send({error: "Vous n'etes pas l'auteur de ce post"})
-    }
     await prisma.comment.deleteMany({ where: { postId }})
     await prisma.post.delete({ where: { id: postId }})
     res.send({ message: "Post supprimé" })
