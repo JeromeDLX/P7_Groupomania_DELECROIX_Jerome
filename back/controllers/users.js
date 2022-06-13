@@ -48,7 +48,10 @@ function createToken (email) {
 // Gestion de l'enregistrement d'un nouvel utilisateur
 async function signupUser (req, res) {
     const {email, password, confirmationPassword} = req.body
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     try {
+    // Vérification si la syntaxe de l'adresse email est correcte
+    if (!emailValidator.test(req.body.email)) return res.status(400).send({error: "Vérifiez votre adresse email"})
     // Vérification si le mot de passe de confirmation à bien été renseigné
     if (confirmationPassword == null) return res.status(400).send({error: "Veillez à confirmer votre mot de passe"})
     // Vérification de la concordance des mots de passe
