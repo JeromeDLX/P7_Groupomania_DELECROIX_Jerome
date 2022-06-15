@@ -49,9 +49,12 @@ function createToken (email) {
 async function signupUser (req, res) {
     const {email, password, confirmationPassword} = req.body
     const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const passwordValidForm = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
     try {
     // Vérification si la syntaxe de l'adresse email est correcte
     if (!emailValidator.test(req.body.email)) return res.status(400).send({error: "Vérifiez votre adresse email"})
+    // Vérification si la syntaxe du password contient bien 8 caracteres
+    if (!passwordValidForm.test(req.body.password)) return res.status(400).send({error: "Le mot de passe doit contenir au moins 8 caractères, 1 chiffre, 1 minuscule et une majuscule"})
     // Vérification si le mot de passe de confirmation à bien été renseigné
     if (confirmationPassword == null) return res.status(400).send({error: "Veillez à confirmer votre mot de passe"})
     // Vérification de la concordance des mots de passe
