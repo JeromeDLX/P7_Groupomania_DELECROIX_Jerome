@@ -143,7 +143,7 @@ function createItemForReload() {
             :disabled="hasInvalidIdentifiers">S'enregistrer
         </button>
 
-        <p class="mt-1 mb-3" @click.prevent="switchLoginMode"><a href="" class="create-account">{{ this.isLoginMode? "Créer un compte" : "Se connecter"}}</a></p>
+        <p class="mt-1 mb-3" @click.prevent="switchLoginMode">Nouveau ici ? <a href="" class="create-account">{{ this.isLoginMode? "Créer un compte" : "Se connecter"}}</a></p>
 
     </form>
 </main>
