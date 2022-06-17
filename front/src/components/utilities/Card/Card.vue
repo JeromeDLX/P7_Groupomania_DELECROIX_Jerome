@@ -79,7 +79,7 @@ export default {
                     <hr class="dropdown-divider mb-4">
                     
                     <div v-for="comment in comments">
-                        <Commentary :email="comment.user.email" :content="comment.content"></Commentary>
+                        <Commentary :email="comment.user.email" :content="comment.content" :createdAt="comment.createdAt"></Commentary>
                     </div>
                     
                     <div class="d-flex gap-1">
