@@ -14,6 +14,10 @@ export default {
             type: String,
             required: true
         },
+        createdAt: {
+            type: String,
+            required: true
+        }
     }
 }
 </script>
@@ -22,7 +26,8 @@ export default {
     <div class="d-flex">
         <Avatar></Avatar>
             <div class="d-flex flex-column commentary p-2 bg-light">
-                <p>{{ email }}</p>
+                <p class="publicationDate">{{ createdAt }} </p>
+                <p>Posté par : {{ email }}</p>
                 <p>{{ content }}</p>
             </div>
     </div>
@@ -40,7 +45,14 @@ export default {
     margin: 3px;
 }
 
-.commentary p:nth-child(1){
+.commentary p:nth-child(2){
     font-weight: 600;
+}
+
+.publicationDate {
+    font-size: small;
+    width: 123px;
+    height: 20px;
+    overflow: hidden;
 }
 </style>
