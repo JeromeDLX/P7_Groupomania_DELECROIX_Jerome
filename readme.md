@@ -1,6 +1,6 @@
 ## Groupomania - Projet 7 de la formation développeur web OPC
 
-Vous êtes actuellement à la racine du projet.
+Vous êtes actuellement à la racine du projet. Ce dernier est un MVP, pour la mise en place du réseau social pour Groupomania.
 
 ### Procédure pour lancer le projet sur votre machine
 
