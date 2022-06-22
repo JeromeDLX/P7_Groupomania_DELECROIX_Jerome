@@ -4,6 +4,6 @@ Vous êtes actuellement sur le front-end du projet.
 
 ### Technologies utilisées pour le frontend
 
-- Bootstrap Vue
 - Vue JS 
+- Bootstrap Vue
 - Sweet Alert 2
