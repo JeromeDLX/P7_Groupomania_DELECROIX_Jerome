@@ -8,7 +8,7 @@ Vous êtes actuellement sur le back-end du projet.
 - Express pour la mise en place de l'application
 - JsonWebToken pour la création des tokens uniques
 - Multer pour la gestion des images
-- Bcrypt pour le cryptage des mots de passe
+- Bcrypt pour le hashage des mots de passe
 - Dotenv pour la création d'un fichier de configuration contenant des variables d'environnement
 - Base de données SQL hébergé sur PlanetScale
 - Prisma comme outil ORM afin de simplifier le code
