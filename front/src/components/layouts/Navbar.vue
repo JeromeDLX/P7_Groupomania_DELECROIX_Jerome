@@ -30,7 +30,7 @@ export default  {
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li>
-                <router-link to="/home" class="nav-link px-4 link-danger">Accueil</router-link>
+                <router-link v-if="!this.isUserLogin" to="/home" class="nav-link px-4 link-danger">Accueil</router-link>
             </li>
         </ul>
 
